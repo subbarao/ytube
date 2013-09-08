@@ -21,15 +21,6 @@ tooglesApp.controller "ViewCtrl", ["$scope", "$routeParams", "$location", "youtu
     onYouTubeIframeAPIReady $scope.video.video_id, $scope.section
     document.title = $scope.video.title.$t + " | Toogles"
 
-  window.relatedCallback = (data) ->
-    $scope.videos = data.feed.entry
-
-  $scope.fetchRelated = ->
-    unless $scope.videos
-      youtube.setCallback "relatedCallback"
-      youtube.getVideos "related", $routeParams.id
-    $scope.showRelated = true
-
   $scope.getLink = (video, index) ->
     if $scope.section is "view"
       "#/view/" + youtube.urlToID(video.media$group.yt$videoid.$t)
@@ -51,7 +42,7 @@ tooglesApp.controller "ViewCtrl", ["$scope", "$routeParams", "$location", "youtu
         onStateChange: (event) ->
           started = true  if event.data is 1
           if started and event.data is -1
-            
+
             # When a new video is started in an existing player, open up its dedicated page.
             if section is "view"
               video_url = event.target.getVideoUrl()

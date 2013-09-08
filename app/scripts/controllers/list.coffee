@@ -1,3 +1,8 @@
+LEFT  = 37
+UP    = 38
+RIGHT = 39
+DOWN  = 40
+ENTER = 13
 ###
 The controller used when searching/browsing videos.
 ###
@@ -22,51 +27,35 @@ tooglesApp.controller "ListCtrl", ["$scope", "$routeParams", "$location", "youtu
     return "#/playlist/" + video.yt$playlistId.$t  if $scope.resulttype is "playlists"
     "#/view/" + youtube.urlToID(video.media$group.yt$videoid.$t)
 
+  nextVideo = (evt, keyCode) ->
+    $scope.index ||=  0
+    if keyCode == ENTER
+      video = $scope.videos[$scope.index]
+      url = video.media$group.yt$videoid.$t
+      $location.path "/view/#{url}"
+
+    offset = switch keyCode
+      when LEFT   then -1
+      when RIGHT  then 1
+      when UP     then -4
+      when DOWN   then 4
+      else 0
+
+    $scope.index = $scope.index + offset
+    if $scope.index > $scope.videos.length or $scope.index < 0
+      $scope.index = 0
+
+    _.each($scope.videos, (v) -> v.selected = false)
+    $scope.videos[$scope.index].selected = true
+    $scope.$apply()
+
+  $scope.$on 'keydown', nextVideo
+
   $scope.page = 0
   $scope.loadMore = ->
     $scope.page = $scope.page + 1
     $scope.search()
 
-  $scope.categories = [
-    key: "Autos"
-    title: "Autos & Vehicles"
-  ,
-    key: "Comedy"
-    title: "Comedy"
-  ,
-    key: "Education"
-    title: "Education"
-  ,
-    key: "Entertainment"
-    title: "Entertainment"
-  ,
-    key: "Film"
-    title: "Film & Animation"
-  ,
-    key: "Howto"
-    title: "How To & Style"
-  ,
-    key: "Music"
-    title: "Music"
-  ,
-    key: "News"
-    title: "News & Politics"
-  ,
-    key: "People"
-    title: "People & Blogs"
-  ,
-    key: "Animals"
-    title: "Pets & Animals"
-  ,
-    key: "Tech"
-    title: "Science & Technology"
-  ,
-    key: "Sports"
-    title: "Sports"
-  ,
-    key: "Travel"
-    title: "Travel & Events"
-  ]
   $scope.search = ->
     youtube.setPage $scope.page
     youtube.setCallback "searchCallback"

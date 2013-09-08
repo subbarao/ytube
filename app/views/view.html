@@ -12,10 +12,6 @@
         </form>
       </div>
     </div>
-    <dl class="hide-for-small tabs two-up">
-      <dd ng-class="{active: !showRelated}"><a href="" ng-click="showRelated = false">Info</a></dd>
-      <dd ng-class="{active: showRelated}"><a href="" ng-click="fetchRelated()">{{videoTab}}</a></dd>
-    </dl>
     <div class="meta" ng-show="!showRelated">
       <h3><a title="View on YouTube" href="http://youtube.com/watch?v={{video.video_id}}&toogles=0">{{video.title.$t}}</a></h3>
       <div class="rating">
@@ -27,9 +23,6 @@
         <li><i class="icon-calendar"></i> {{video.published.$t | date}}</li>
       </ul>
       <p class="hide-for-small description" ng-bind-html="video.media$group.media$description.$t | htmlify"></p>
-    </div>
-    <div class="related" ng-show="showRelated">
-      <div ng-include src="'views/videos.html'"></div>
     </div>
   </div>
   <div class="columns" ng-class="{nine: showSidebar, twelve: !showSidebar}">

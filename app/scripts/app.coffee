@@ -18,6 +18,15 @@ window.tooglesApp = angular.module("tooglesApp", ["ngSanitize"]).config(["$route
     templateUrl: "views/view.html"
     controller: "ViewCtrl"
 
+  $routeProvider.when "/view/:username/:id",
+    templateUrl: "views/view.html"
+    controller: "ViewCtrl"
+    resolve:
+    	videos: [ 'youtube', (youtube) ->
+    		youtube.setCallback "searchCallback"
+    		youtube.getVideos "search", $scope.query
+    	]
+
   $routeProvider.when "/playlist/:id",
     templateUrl: "views/view.html"
     controller: "ViewCtrl"
@@ -29,6 +38,7 @@ window.tooglesApp = angular.module("tooglesApp", ["ngSanitize"]).config(["$route
   $routeProvider.when "/user/:username",
     templateUrl: "views/list.html"
     controller: "ListCtrl"
+
 
   $routeProvider.when "/user/:username/:feed",
     templateUrl: "views/list.html"
