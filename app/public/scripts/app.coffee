@@ -1,7 +1,7 @@
 "use strict"
 
 # Angular setup
-window.tooglesApp = angular.module("tooglesApp", ["ngSanitize"]).config(["$routeProvider", ($routeProvider) ->
+tooglesApp = angular.module("tooglesApp", ["ngSanitize"]).config(["$routeProvider", ($routeProvider) ->
   $routeProvider.when "/browse",
     templateUrl: "views/list.html"
     controller: "ListCtrl"
